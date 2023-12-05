@@ -1,19 +1,21 @@
 import React from 'react'
+import { ExperienceType } from '../_types'
 
-const Experience = () => {
+
+const Experience = (props : ExperienceType) => {
     return (
         <div>
             <div className='flex justify-between items-center'>
 
                 <p className=' text-[18px]'>
-                    Experience Title
+                    {props.title}
                 </p>
                 <p className=' text-gray-600 text-[14px] font-thin italic'>
-                    January 12, 2012 - Feb 12,2013
+                    {props.startDate} - {props.endDate}
                 </p>
             </div>
             <p className=' text-gray-600 text-[16px]'>
-                Company Name
+                {props.companyName}
             </p>
 
         </div>

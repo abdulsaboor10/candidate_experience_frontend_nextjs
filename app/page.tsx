@@ -2,7 +2,15 @@ import React from 'react'
 import CandidatesTable from './_components/CandidatesTable'
 import Link from 'next/link'
 
-const Home = () => {
+type Props = {
+  searchParams: { 
+    offset?:string
+   };
+};
+
+
+const Home = ({searchParams}:Props) => {
+
   return (
     <div>
       <div className='mt-[100px]'>
@@ -15,7 +23,7 @@ const Home = () => {
           </Link>
 
         </div>
-        <CandidatesTable />
+        <CandidatesTable offset={searchParams?.offset || "0"} />
       </div>
 
     </div>

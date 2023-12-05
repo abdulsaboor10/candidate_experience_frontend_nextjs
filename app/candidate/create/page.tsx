@@ -42,12 +42,42 @@ const options = {
 }
 
 const AddCandidate = () => {
-    const [show, setShow] = useState < boolean > (false)
+    const [showDate, setShowDate] = useState < boolean > (false)
+	const [dob , setDob] = useState(new Date("2022-01-01"))
+	const [name , setName] = useState("")
+	const [phoneNo , setPhoneNo] = useState("")
 	const handleChange = (selectedDate: Date) => {
-		console.log(selectedDate)
+		setDob(selectedDate)
 	}
 	const handleClose = (state: boolean) => {
-		setShow(state)
+		setShowDate(state)
+	}
+
+	const handleFormSubmit = async () => {
+		try {
+			const data = {
+				name,
+				phoneNo,
+				dob
+			}
+
+			const response = await fetch("http://localhost:8080/candidate/", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+	
+				body: JSON.stringify(data),
+			});
+
+			if (!response.ok) {
+				alert("Failed to add new experience")
+			}
+			window.location.href = `/`
+		} catch (error) {
+			alert("Failed to create a new candidate")
+			
+		}
 	}
     return (
         <div className="mt-[100px] w-[500px] mx-auto">
@@ -56,26 +86,25 @@ const AddCandidate = () => {
                 <span className="font-bold text-xl">Create a New Candidate</span>
             </div>
             <div>
-                <form className="flex flex-col gap-8">
+                <div className="flex flex-col gap-8">
                     <div className="relative z-0 w-full mb-5 group">
-                        <input type="text" name="floating_name" id="floating_name" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                        <input value={name} onChange={(e) => setName(e.target.value)} type="text" name="floating_name" id="floating_name" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                         <label htmlFor="floating_name" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Name</label>
                     </div>
                     <div className="relative z-0 w-full mb-5 group">
-                        <input type="text" name="floating_phone" id="floating_phone" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                        <input value={phoneNo} onChange={(e) => setPhoneNo(e.target.value)} type="text" name="floating_phone" id="floating_phone" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                         <label htmlFor="floating_phone" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Phone</label>
                     </div>
                     
                     <div className="relative">
-                        <Datepicker options={options} onChange={handleChange} show={show} setShow={handleClose} />
-
+                        <Datepicker options={options} onChange={handleChange} show={showDate} setShow={handleClose} />
                     </div>
                     <div className='flex justify-end'>
-                        <button className="bg-slate-700 hover:bg-slate-800 text-white py-2 px-4 rounded">
+                        <button onClick={handleFormSubmit} className="bg-slate-700 hover:bg-slate-800 text-white py-2 px-4 rounded">
                             Submit
                         </button>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     )
