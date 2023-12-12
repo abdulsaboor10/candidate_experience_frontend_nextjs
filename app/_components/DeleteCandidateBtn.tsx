@@ -10,7 +10,7 @@ const DeleteCandidateBtn = ({ id }: PropsType) => {
     const handleOnClick = async () => {
         try {
             alert("hello")
-            const response = await fetch("http://localhost:8080/candidate/" + id, {
+            const response = await fetch(process.env.NEXT_PUBLIC_API_URI + "candidate/" + id, {
                 method: "DELETE"
             });
             console.log(response)

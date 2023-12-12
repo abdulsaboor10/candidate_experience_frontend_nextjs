@@ -1,42 +1,40 @@
 import Link from 'next/link'
 import React from 'react'
 import { CandidateListType } from '../_types'
-import { useRouter } from 'next/router';
 import { URLSearchParams } from 'url';
 import DeleteCandidateBtn from './DeleteCandidateBtn';
 type CandidateTablePropType = {
-    offset:string
-} 
+    offset: string
+}
 
 
 
-const fetchCandidates = async (offset:any): Promise<CandidateListType | null> => {
+const fetchCandidates = async (offset: any): Promise<CandidateListType | null> => {
     try {
-      const response = await fetch("http://localhost:8080/candidate?" + new URLSearchParams({
-        offset
-      }) ,{
-        cache : "no-store"
-      });
-  
-      if (!response.ok) {
-        console.log("Request failed with status:", response.status);
-        return null;
-      }
-  
-      const data = await response.json();
-      return data;
-    } catch (err) {
-      console.error("Error:", err);
-      return null;
-    }
-  };
+        const response = await fetch(process.env.NEXT_PUBLIC_API_URI + "candidate?" + new URLSearchParams({
+            offset
+        }), {
+            cache: "no-store"
+        });
 
-const CandidatesTable = async (props:CandidateTablePropType) => {
-    
+        if (!response.ok) {
+            console.log("Request failed with status:", response.status);
+            return null;
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (err) {
+        console.error("Error fetching candidates:", err);
+        return null;
+    }
+};
+
+const CandidatesTable = async (props: CandidateTablePropType) => {
 
     const data = await fetchCandidates(props.offset)
     const content = data?.content || []
-    if (!data || !data.content){
+    if (!data || !data.content) {
         return (
             <h3 className='text-center'>
                 Failed to load Data
@@ -69,8 +67,7 @@ const CandidatesTable = async (props:CandidateTablePropType) => {
                                 {content.map((item, index) => {
                                     return (
                                         <tr key={index} className="bg-gray-100 border-b">
-                                            {/* <td className="text-center px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{Number(data?.pageable.offset)*Number(data?.pageable.pageSize) + (index + 1)}</td> */}
-                                            <td className="text-center px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{Number(data?.pageable.pageNumber)*Number(data?.pageable.pageSize)+(index+1)}</td>
+                                            <td className="text-center px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{Number(data?.pageable.pageNumber) * Number(data?.pageable.pageSize) + (index + 1)}</td>
                                             <td className="text-center text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                                 {item.name}
                                             </td>
@@ -82,8 +79,7 @@ const CandidatesTable = async (props:CandidateTablePropType) => {
                                                     <Link href={`/candidate/${item.id}`}>
                                                         <button className=' bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded'>View</button>
                                                     </Link>
-                                                    <DeleteCandidateBtn id={item.id}/>
-                                                    {/* <button className=' bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded'>Delete</button> */}
+                                                    <DeleteCandidateBtn id={item.id} />
                                                 </div>
                                             </td>
                                         </tr>

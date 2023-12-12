@@ -10,6 +10,8 @@ type PropsType = {
 
 const fetchCandidateExperiences = async (id: string): Promise<ExperienceType[] | null> => {
     try {
+        let url = `${process.env.NEXT_PUBLIC_API_URI}candidate/${id}/experiences`
+
         const response = await fetch(`http://localhost:8080/candidate/${id}/experiences`)
         if (!response.ok) {
             return null

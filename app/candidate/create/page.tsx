@@ -2,7 +2,9 @@
 
 import React, { useState } from 'react'
 import Datepicker from "tailwind-datepicker-react"
-const options = {
+import { IOptions } from 'tailwind-datepicker-react/types/Options'
+
+const options: IOptions = {
 	title: "Date of birth",
 	autoHide: true,
 	todayBtn: false,
@@ -10,17 +12,6 @@ const options = {
 	clearBtnText: "Clear",
 	maxDate: new Date("2030-01-01"),
 	minDate: new Date("1950-01-01"),
-	theme: {
-		// background: "bg-gray-700 dark:bg-gray-800",
-		todayBtn: "",
-		clearBtn: "",
-		icons: "",
-		text: "",
-		// disabledText: "bg-red-500",
-		input: "",
-		inputIcon: "",
-		selected: "",
-	},
 	icons: {
 		// () => ReactElement | JSX.Element
 		prev: () => <span className='text-sm'>Previous</span>,
@@ -61,7 +52,7 @@ const AddCandidate = () => {
 				dob
 			}
 
-			const response = await fetch("http://localhost:8080/candidate/", {
+			const response = await fetch(process.env.NEXT_PUBLIC_API_URI + "candidate/", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

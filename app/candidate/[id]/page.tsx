@@ -13,7 +13,7 @@ type PropType = {
 
 const fetchCandidateWithRecentExperience = async (id: string): Promise<CandidateWithRecentExperienceType | null> => {
     try {
-        const response = await fetch(`http://localhost:8080/candidate/${id}/with-recent-experience`,
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URI}candidate/${id}/with-recent-experience`,
         {cache: 'no-store'}
         )
         if (!response.ok) {

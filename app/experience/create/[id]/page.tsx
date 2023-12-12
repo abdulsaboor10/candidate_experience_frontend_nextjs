@@ -1,27 +1,15 @@
 "use client"
-import moment from 'moment'
-import { redirect, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
-import Datepicker from "tailwind-datepicker-react"
-
-const options = {
+import Datepicker  from "tailwind-datepicker-react"
+import { IOptions } from 'tailwind-datepicker-react/types/Options'
+const options : IOptions = {
 	autoHide: true,
 	todayBtn: false,
 	clearBtn: true,
 	clearBtnText: "Clear",
 	maxDate: new Date("2030-01-01"),
 	minDate: new Date("1950-01-01"),
-	theme: {
-		// background: "bg-gray-700 dark:bg-gray-800",
-		todayBtn: "",
-		clearBtn: "",
-		icons: "",
-		text: "",
-		// disabledText: "bg-red-500",
-		input: "",
-		inputIcon: "",
-		selected: "",
-	},
 	icons: {
 		// () => ReactElement | JSX.Element
 		prev: () => <span className='text-sm'>Previous</span>,
@@ -86,7 +74,7 @@ const CreateExperience = ({ params }: PropsType) => {
 			}
 
 
-			const response = await fetch("http://localhost:8080/experience/" + params.id, {
+			const response = await fetch(process.env.NEXT_PUBLIC_API_URI+"experience/" + params.id, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
